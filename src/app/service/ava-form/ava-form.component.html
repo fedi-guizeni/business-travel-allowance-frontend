@@ -1,0 +1,231 @@
+<div class="title" > <h4>Gestion dossier > creation </h4> </div>
+
+<div>  
+
+<div class="container px-5 my-5">
+    <div class="titre">
+        <h3 >nouveau dossier</h3>
+    </div>
+  
+  <form #clientform="ngForm"  (ngSubmit)="getClient(clientform.value)"  class="checkbtn">
+    <div class="form-floating mb-3"> <input class="form-control" type="text"  #userIdfield  
+       name="userId" [(ngModel)]="clientId" [hidden]="true"></div>    <button style="margin: 3px;"  class="btn btn-primary  " type="submit">check</button> 
+      </form>
+  <form  data-sb-form-api-token="81a9e7c5-9db1-4f85-b317-f6559ee50ba3"   id="avaform" #avaform="ngForm" (ngSubmit)="onAvaFe(avaform.value)">
+       <input name="agent"   [(ngModel)]="agent" type="text" [hidden]="true"> 
+      
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3 ">
+                    <input class="form-control" id="idClient" type="text" [(ngModel)]="clientId" placeholder="id Client"
+                     data-sb-validations="required" #idClientInput="ngModel" pattern="^[0-9]*$"  name="idClient" ngModel  required minlength="5" maxlength="10"/>
+                    <label for="idClient">Num Client </label>
+                    <div  class="help-block" style="color:red;"
+                     *ngIf="idClientInput.invalid && idClientInput.touched"  >num Client non valide.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3 ">
+                    <select class="form-select" aria-label="type Ava" name="avaType" ngModel  #avatype  (change)="calcDat(cahtvalue.value,avatype.value)">
+                        <option value="" disabled selected> sélectionner le type ava</option>
+                        <option value="exportateur">exportateur</option>
+                        <option value="autre-activités">autre activités</option>
+                        <option value="marche-a-etranger">marche a l&#x27;étranger</option>
+                    </select>
+                    <label for="typeAva">type Ava*</label>
+                </div> 
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                   <!--  <input class="form-control" id="naturePiece" type="text" placeholder="nature pièce " data-sb-validations="required" name="naturePiece" ngModel required /> -->
+                    <select class="form-select" aria-label="nature pièce" name="naturePiece" ngModel required >
+                        <option value="" disabled selected> sélectionner nature pièce</option>
+                        <option value="CIN">CIN</option>
+                        <option value="Matricule fiscale">Matricule fiscale</option>
+                        <option value="cs">cs</option>
+                    </select>
+                    <label for="typeAva">nature pièce d’identité</label>
+                    <div class="invalid-feedback" data-sb-feedback="naturePiece:required">nature pièce is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="numCin" type="text" pattern="^[0-9]*$"  #numCinInput="ngModel"  placeholder="num Cin"data-sb-validations="required"  name="numCin" ngModel required />
+                    <label for="numCin">num pièce d’identité</label>
+                    <div  class="help-block" style="color:red;"*ngIf="numCinInput.invalid && numCinInput.touched"  >num pièce d’identité non valide.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="codeAgence" type="text" pattern="^[0-9]*$"  #codeAgenceInput="ngModel"  placeholder="codeAgence" data-sb-validations="required" name="codeAgence" ngModel required/>
+                    <label for="codeAgence">code Agence</label>
+                    <div  class="help-block" style="color:red;"*ngIf="codeAgenceInput.invalid && codeAgenceInput.touched"  >code Agence non valide.</div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="dateValidite" type="date" placeholder="dateValidite" data-sb-validations="required" name="dateValidite"ngModel required />
+                    <label for="dateValidite">Date validite</label>
+                    <div class="invalid-feedback" data-sb-feedback="dateValidite:required">dateValidite is required.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="finValidite" type="date" placeholder="finValidite" data-sb-validations="required" name="finValidite"ngModel required>
+                    <label for="finValidite">Fin validite</label>
+                    <div class="invalid-feedback" data-sb-feedback="finValidite:required">finValidite is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="compteDebit" type="text" pattern="^[0-9]*$"  #compteDebitInput="ngModel" [(ngModel)]="client.account" placeholder="compteDebit" data-sb-validations="required" name="compteDebit"ngModelrequired />
+                    <label for="compteDebit">Compte Debit</label>
+                    <div  class="help-block" style="color:red;"*ngIf="compteDebitInput.invalid && compteDebitInput.touched"  >compte Debit non valide.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="activiteBct" type="text"   placeholder="activiteBct" data-sb-validations="required" name="activiteBct"ngModel required />
+                    <label for="activiteBct">Activite Bct</label>
+                    <div class="invalid-feedback" data-sb-feedback="activiteBct:required">activiteBct is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="numAutorBct" #numAutorBct type="text"  pattern="^[0-9]*$"  #numAutorBctInput="ngModel" placeholder="numAutorBct" data-sb-validations="required" name="numAutorBct"ngModel  required/>
+                    <label for="numAutorBct">Num autor Bct</label>
+                    <div  class="help-block" style="color:red;"*ngIf="numAutorBctInput.invalid && numAutorBctInput.touched"  >num Autor Bct non valide.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3" >
+                    <input class="form-control" id="dataAutoBct" type="date"  placeholder="dataAutoBct" data-sb-validations="required" name="dataAutoBct" ngModel [disabled]="inputdisableBct(numAutorBct.value)" required/>
+                    <label for="dataAutoBct">Date autor Bct</label>
+                    <div class="invalid-feedback" data-sb-feedback="dataAutoBct:required">dataAutoBct is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3" >
+                    <input class="form-control" id="montantBct" type="text"  pattern="^[0-9]*$"  #montantBctInput="ngModel"  placeholder="montantBct" data-sb-validations="required" name="montantBct" ngModel required/>
+                    <label for="montantBct">Montant Bct</label>
+                    <div  class="help-block" style="color:red;"*ngIf="montantBctInput.invalid && montantBctInput.touched"  >montant Bct non valide.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+          <input class="form-control" type="number" placeholder="caht"  pattern="^[0-9]*$"  #cahtInput="ngModel"  data-sb-validations="required"  name="caht" ngModel #cahtvalue  (keyup)="calcDat(cahtvalue.value,avatype.value)" required />
+          <label for="caht">caht</label>
+          <div  class="help-block" style="color:red;"*ngIf="cahtInput.invalid && cahtInput.touched"  >C A H T  non valide.</div>
+        </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="number" placeholder="dat" data-sb-validations="required" name="dat" [(ngModel)]="dat" readonly required />
+                    <label for="dat">Dat</label>
+                    <div class="invalid-feedback" data-sb-feedback="dat:required">dat is required.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="text" placeholder="titulaireMarche" data-sb-validations="required" name="titulaireMarche"ngModel [disabled]="inputdisable(avatype.value)" required />
+                    <label for="titulaireMarche">Titulaire marche</label>
+                    <div class="invalid-feedback" data-sb-feedback="titulaireMarche:required">titulaireMarche is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="text" placeholder="MontantContrat"  pattern="^[0-9]*$"  #MontantContratInput="ngModel" data-sb-validations="required" name="montantContrat"ngModel [disabled]="inputdisable(avatype.value)" required />
+                    <label for="MontantContrat">Montant Contrat</label>
+                    <div  class="help-block" style="color:red;"*ngIf="MontantContratInput.invalid && MontantContratInput.touched"  >Montant Contrat non valide.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="text" placeholder="devise" data-sb-validations="required" name="devise"ngModel [disabled]="inputdisable(avatype.value)" required/>
+                    <label for="devise">Devise</label>
+                    <div class="invalid-feedback" data-sb-feedback="dat:required">devise is required.</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="date" placeholder="dateContrat" data-sb-validations="required" name="dateContrat"ngModel [disabled]="inputdisable(avatype.value)" required/>
+                    <label for="dateContrat">Date contrat</label>
+                    <div class="invalid-feedback" data-sb-feedback="dateContrat:required">dateContrat is required.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input class="form-control"  type="text" placeholder="referenceFiscale" pattern="^[0-9]*$"  #refFiscaleInput="ngModel" data-sb-validations="required" name="referenceFiscale"ngModel [disabled]="inputdisableAutre(avatype.value)"required />
+                    <label for="referenceFiscale">Reference fiscale</label>
+                    <div  class="help-block" style="color:red;"*ngIf="refFiscaleInput.invalid && refFiscaleInput.touched"  >reference Fiscale  non valide.</div>
+                </div>
+            </div>
+            <div class="col">
+                
+      <div class="form-floating mb-3">
+        <input class="form-control"  type="date" placeholder="dateDeclarationFiscale" data-sb-validations="required" name="dateDeclarationFiscale"ngModel [disabled]="inputdisableAutre(avatype.value)" required />
+        <label for="dateDeclarationFiscale">Date declaration fiscale</label>
+        <div class="invalid-feedback" data-sb-feedback="dateDeclarationFiscale:required">dateDeclarationFiscale is required.</div>
+    </div>
+            </div>
+
+        </div>
+
+      <div class="form-floating mb-3">
+          <input class="form-control" id="observation" type="text" placeholder="observation" data-sb-validations="required" name="observation"ngModel required/>
+          <label for="observation">Observation</label>
+          <div class="invalid-feedback" data-sb-feedback="observation:required">observation is required.</div>
+      </div>
+  
+      <div class="d-none" id="submitSuccessMessage">
+          <div class="text-center mb-3">
+              <div class="fw-bolder">Form submission successful!</div>
+              <p>To activate this form, sign up at</p>
+              <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+          </div>
+      </div>
+      <div class="d-none" id="submitErrorMessage">
+          <div class="text-center text-danger mb-3">Error sending message!</div>
+      </div>
+      <div class="d-flex flex-row-reverse ">
+        <button  class="btn btn-primary btn-lg  m-1  " [disabled]="avaform.invalid" id="submitButton" type="submit">Valider</button>
+        <button class="btn btn-secondary btn-lg m-1 "  type="reset">Réinitialiser</button>
+    </div>
+  </form>
+</div>
+</div>
+<!-- -->
+
+
+
+
+ 
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>

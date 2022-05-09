@@ -1,0 +1,323 @@
+<div class="wrapper"> 
+
+
+    <div class="content">  
+      <form class="form-inline my-2 my-lg-0 justify-content-center">
+        <input name="searchTerm" #searchInput="ngModel" id="search" class="form-control mr-sm-4" [(ngModel)]="searchAva" 
+        placeholder="Search AVA...">
+     </form>
+    <table class="table table-hover" id="listAva" >
+        <thead class="table-borderless">
+          <tr class="text-center">
+           
+            <th>Num client</th>
+            <th>Type ava</th>
+            <th>Reference dossier</th>    
+            <th>Caht</th>      
+            <th>Date validite</th>
+            <th>Fin validite</th>
+            <th>Statut dossier</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let ava of avas | filter:searchAva | paginate: { id: 'listAvaS',
+        itemsPerPage: pageSize,
+        currentPage:page   }"  >
+       
+          <tr class="text-center" >
+            <td >{{ava?.idClient}}</td>
+            <td>{{ava?.avaType}}</td>
+            <td >{{ava?.referenceDossierAVA}}</td>
+            <td >{{ava?.caht}}</td> 
+            <td> {{ava?.dateValidite | date:'yyyy-MM-dd'}} </td>
+            <td> {{ava?.finValidite | date:'yyyy-MM-dd'}} </td>
+            <td >{{ava?.statutDossier}}</td>
+           <td>
+            <div class="btn-group">
+              <button class="btn btn-outline-info" (click)="onEditAva(ava)" data-backdrop="false"><i class="fas fa-edit"></i></button>
+         
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline-info" (click)="onEditBenef(ava)" data-backdrop="false"><i class="fas fa-user-group"></i></button>
+         
+            </div>
+           </td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="pagination"> 
+    <pagination-controls class="my-pagination"  id="listAvaS" (pageChange)="page = $event" nextLabel="suivante" previousLabel="précédente"></pagination-controls>
+    </div>
+        <button [hidden]="true" type="button" id="openAvaEdit" data-toggle="modal" data-target="#editUserModal" data-backdrop="false"  ></button>
+    
+        <button [hidden]="true" type="button" id="openBenefEdit" data-toggle="modal" data-target="#editBenefModal" data-backdrop="false"  ></button>
+      
+      
+    
+        <div class="modal fade" id="editUserModal" tabindex="-1"
+        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+        <div class="modal-dialog modal-lg" role="document" style="background-color: white;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-center">Edit {{editAva?.idClient}}
+                {{editAva?.avaType}} statutDossier : <span class="badge badge-success" style="background-color: green;"> {{editAva?.statutDossier}} </span> </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="">
+                <form #editUserForm="ngForm">
+                 
+                  <div class="form-group  mt-2">
+                    <label class="p-1" for="statutDossier">Num Client</label>
+                    <input type="text" name="idClient" required readonly
+                      [(ngModel)]="editAva.idClient" class="form-control">
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label class="p-1" for="referenceDossierAVA">Reference dossier</label>
+                    <input type="text" name="referenceDossierAVA" required readonly
+                      [(ngModel)]="editAva.referenceDossierAVA" class="form-control">
+                  </div>
+                  <div class="form-group mt-2">
+                    <label  class="p-1" for="avaType">Type ava</label>
+                    <input type="text" name="avaType" required readonly
+                      [(ngModel)]="editAva.avaType" class="form-control">
+                  </div>
+                  <div class="form-group mt-2">
+                    <label  class="p-1" for="naturePiece">Type carte</label>
+                    <input type="text" name="naturePiece" required readonly
+                      [(ngModel)]="editAva.naturePiece" class="form-control">
+                      <div class="form-group  mt-2" >
+                        <label  class="p-1" for="avaType">Num carte</label>
+                        <input type="text" name="numCin" required readonly 
+                          [(ngModel)]="editAva.numCin" class="form-control">
+                      </div>
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="dateValidite">Date validite</label>
+                    <input type="date" name="dateValidite" required   [ngModel]= "editAva.dateValidite | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dateValidite"   class="form-control" >
+                     
+                  </div>    
+                      <div class="form-group  mt-2">
+                    <label  class="p-1" for="finValidite">Fin validite</label>
+                      <input  type="date"  name="finValidite" required  [ngModel]= "editAva.finValidite | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.finValidite"  class="form-control">
+                  </div>
+                        <div class="form-group  mt-2">
+                    <label  class="p-1" for="caht">C a h t</label>
+                    <input type="text" name="caht" required
+                      [(ngModel)]="editAva.caht" class="form-control">
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="dat">D a t</label>
+                    <input type="text" name="dat" required
+                      [(ngModel)]="editAva.dat" class="form-control">
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="finValidite">Activite Bct</label>
+                      <input  type="text"  name="activiteBct" required [(ngModel)]="editAva.activiteBct"  class="form-control">
+                  </div>
+               
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="montantBct">Montant complémentaire Bct</label>
+                      <input  type="number"  name="montantBct" required [(ngModel)]="editAva.montantBct"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="dataAutoBct">Date autorisation Bct</label>
+                      <input  type="date"  name="dataAutoBct" [ngModel]= "editAva.dataAutoBct | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dataAutoBct"   class="form-control">
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="numAutorBct">Num autorisation Bct</label>
+                      <input  type="text"  name="numAutorBct" required [(ngModel)]="editAva.numAutorBct"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="checkAu()">
+                    <label  class="p-1" for="nompromoteurProjet">Nom promoteur projet</label>
+                      <input  type="text"  name="nompromoteurProjet" required [(ngModel)]="editAva.nompromoteurProjet"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="checkAu()">
+                    <label  class="p-1" for="finValidite">Date declaration fiscale</label>
+                      <input  type="date"  name="dateDeclarationFiscale" required  [ngModel]= "editAva.dateDeclarationFiscale | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dateDeclarationFiscale" class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="checkAu()">
+                    <label  class="p-1" for="referenceFiscale">Reference fiscale</label>
+                      <input  type="text"  name="referenceFiscale" required    [(ngModel)]="editAva.referenceFiscale"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="check()">
+                    <label  class="p-1" for="montantContrat">Montant contrat</label>
+                      <input  type="text"  name="montantContrat" required [(ngModel)]="editAva.montantContrat"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="check()" >
+                    <label  class="p-1" for="devise">Devise</label>
+                      <input  type="text"  name="devise" required [(ngModel)]="editAva.devise"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="check()">
+                    <label  class="p-1" for="titulaireMarche">Titulaire marche</label>
+                      <input  type="text"  name="titulaireMarche" required [(ngModel)]="editAva.titulaireMarche"  class="form-control">
+                  </div>
+                  <div class="form-group  mt-2" *ngIf="check()" >
+                    <label  class="p-1" for="dateContrat">Date contrat</label>
+                      <input  type="date"  name="dateContrat" required [ngModel]= "editAva.dateContrat | date:'yyyy-MM-dd'"  (ngModelChange)="editAva.dateContrat"  class="form-control">
+                  </div>
+                
+                  <!--<div class="form-group mt-2">
+                    <label   class="p-1" for="StatutDossier">Statut dossier</label>
+                      <select  name="statutDossier" required  [(ngModel)]="editAva.statutDossier"  class="form-control">
+                        <option >....</option>
+                        <option value="Active" >Active</option>
+                        <option value="Suspendu">Suspendu</option>
+                        <option value="Non renouvele">Non renouvelé</option>
+                        <option value="Clôturé">Clôturé</option>
+                      </select>
+                  </div>
+                  <div class="form-group  mt-2">
+                    <label   class="p-1"for="finValidite">Statut validation dossier</label>
+                      <select  name="statutValidationDossier" required  [(ngModel)]="editAva.statutValidationDossier"  class="form-control">
+                         <option value="Pending for Regulatory Approval" >En attente d'approbation réglementaire  </option> 
+                         <option value="Awaiting Final Regulatory Approval">En attente de l'approbation réglementaire finale</option> 
+                        <option value="Rejected by Regulatory">Rejeté par réglementaire</option>
+                        <option value="Validated">Validé</option>
+                       
+                      </select>
+                  </div>-->
+                   
+                  <div class="form-group  mt-2">
+                    <label  class="p-1" for="finValidite">Observation</label>
+                    <textarea name="" id=""  name="observation" required [(ngModel)]="editAva.observation"  class="form-control"></textarea>
+                  </div>
+                </form>
+                <small>Rejeter : Statut validation dossier => Rejeté par réglementaire </small> <br>
+                <small>Valider : Statut => Active </small>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Fermer</button>
+              <button type="button" (click)="onRejectAva()" [disabled]="editUserForm.invalid" class="btn btn-danger">Rejeter</button>
+              <button type="button" (click)="onUpdateAva()" [disabled]="editUserForm.invalid" class="btn btn-primary">Valider</button>
+            </div>
+          </div>
+        </div>
+      <!-- beneficiaries -->
+       
+    </div>
+    <div class="modal fade bd-example-modal-xl" id="editBenefModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+    <div class="modal-dialog modal-xl" role="document" style="background-color: white;">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title text-center">Liste beneficiaries</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+          <table class="table table-hover" id="listAva">
+            <thead class="table-borderless">
+              <tr class="text-center">
+               
+                <th>Num bénéficiaire</th>
+                <th>Nom Prenom</th>
+                <th>Type carte</th>
+                <th>Num carte</th>
+                
+                <th>Adresse</th>
+                <th>Téléphone</th>
+                <th>Qualite</th>
+                
+                <th>Statut</th>
+                <th>Modifier</th>
+              </tr>
+            </thead>
+              <tbody *ngFor="let beneficiaries of editAva?.beneficiaries" >
+                <tr class="text-center">
+                  <td >{{beneficiaries.idBenef}}</td>
+                  <td>{{beneficiaries.nomPrenomBenef}}</td>
+                    <td >{{beneficiaries.benefCardType}}</td>
+                       <td >{{beneficiaries.benefCardId}}</td>
+                 
+                  <td >{{beneficiaries.adressBenef}}</td>
+                  <td>{{beneficiaries.tel}}</td>
+                <td >{{beneficiaries.qualite}}</td>
+                
+                  <td >{{beneficiaries.statutBenef}}</td>
+                  
+                  <td>
+                    <div class="btn-group">
+                      <button class="btn btn-outline-info" *ngIf="checkstatutAva()" (click)="onEditBenefec(beneficiaries)" data-backdrop="false"><i class="fas fa-edit"></i></button>
+                 
+                    </div>
+                   
+                   </td>
+                  
+              </tbody>
+              
+          </table>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditBenefModalButton">Fermer</button>
+            <button type="button"  [routerLink]="['/home/add-beneficiare' ,editAva.idClient,editAva.avaType]" [disabled]="!checkstatutAva()" class="btn btn-primary">Ajouter bénéficiaire</button>
+          </div>
+        
+          <button [hidden]="true" type="button" id="openBeneeEdit" data-toggle="modal" data-target="#modifierBenefModal" data-bs-toggle="modal" data-bs-dismiss="modal" data-backdrop="false"  ></button>
+        
+          <div class="modal fade bd-example-modal-xl" id="modifierBenefModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+    <div class="modal-dialog modal-xl" role="document" style="background-color: white;">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h5 class="modal-title text-center">Modifier bénéficiaire</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #editBenefForm="ngForm">
+                 
+            <div class="form-group  mt-2">
+              <label class="p-1" for="statutDossier">Num bénéficiaire</label>
+              <input type="text" name="idClient" required readonly
+                [(ngModel)]="editBenef.idBenef" class="form-control">
+            </div>
+            <div class="form-group  mt-2">
+              <label class="p-1" for="nomPrenomBenef">Nom Prenom</label>
+              <input type="text" name="nomPrenomBenef" required 
+                [(ngModel)]="editBenef.nomPrenomBenef" class="form-control">
+            </div>
+            <div class="form-group  mt-2">
+              <label for="benefCardType">Type carte</label>
+              <input type="text" name="benefCardType" required readonly
+                [(ngModel)]="editBenef.benefCardType" class="form-control">
+            </div>
+            
+            <div class="form-group  mt-2">
+              <label for="benefCardId">Num carte</label>
+              <input type="text" name="benefCardId" required readonly
+                [(ngModel)]="editBenef.benefCardId" class="form-control">
+            </div>
+            <div class="form-group  mt-2">
+              <label for="adressBenef">Adresse</label>
+              <input type="text" name="adressBenef" required 
+                [(ngModel)]="editBenef.adressBenef" class="form-control">
+            </div>
+                <div class="form-group  mt-2">
+                  <label for="tel">Téléphone</label>
+                  <input type="text" name="tel" required 
+                    [(ngModel)]="editBenef.tel" class="form-control">
+                </div>
+                <div class="form-group  mt-2">
+                  <label for="qualite">Qualite</label>
+                  <input type="text" name="tqualiteel" required 
+                    [(ngModel)]="editBenef.qualite" class="form-control">
+                </div>
+                <div class="form-group  mt-2">
+                  <label for="statutBenef">Statut </label>
+                  <input type="text" name="statutBenef" required 
+                    [(ngModel)]="editBenef.statutBenef" class="form-control">
+                </div>
+           
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditBenefModalButton">Fermer</button>
+            <button type="button" (click)="onUpdateBenef()" [disabled]="editBenefForm.invalid" class="btn btn-primary">Valider</button>
+          </div>
+    
+       

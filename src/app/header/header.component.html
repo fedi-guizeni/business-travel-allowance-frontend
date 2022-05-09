@@ -1,0 +1,27 @@
+  
+<mat-toolbar>
+    
+    <mat-toolbar-row>
+        <span>ARAB TUNISIAN BANK</span>
+        <div class="nav" fxFlex fxLayout="row" fxLayoutAlign="flex-end">
+            <div class="item" > 
+                       <p   mat-menu-item [matMenuTriggerFor]="menu">  <mat-icon>person</mat-icon>{{user?.firstName}}    <mat-icon >keyboard_arrow_down</mat-icon> </p> 
+                    </div>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item  routerLink="/portail-ava/profile">
+                            <mat-icon>account_circle</mat-icon>profile
+                        </button>
+                        <button mat-menu-item  (click)="onLogOut()">
+                            <mat-icon>exit_to_app</mat-icon>Se deconnecter
+                        </button>
+                    </mat-menu>
+
+               
+            
+        </div>
+    </mat-toolbar-row>
+
+ </mat-toolbar>
+
+
+ 

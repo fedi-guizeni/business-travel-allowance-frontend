@@ -1,0 +1,46 @@
+td {
+    cursor: pointer;
+  }
+  .move-right {
+      position: absolute;
+      right: 0;
+    }
+  
+    .move-left {
+      position: absolute;
+      left: 0;
+    }
+  
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-file input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      min-width: 100%;
+      min-height: 100%;
+      font-size: 100px;
+      text-align: right;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      outline: none;
+      background: white;
+      cursor: inherit;
+      display: block;
+    }
+    .breadcrumb{
+        background-color: rgb(209, 206, 206);
+        padding: 1rem;
+    }
+
+.badge-success {
+  background-color: green;
+}
+.badge-danger{
+  background-color: red;
+  
+}
+.modal { background: rgba(000, 000, 000, 0.8); min-height:1000000px; }
+.modal-backdrop.in { z-index: auto;}

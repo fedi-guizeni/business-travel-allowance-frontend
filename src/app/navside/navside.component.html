@@ -1,0 +1,129 @@
+
+
+<!-- 
+ <nav class="navbar navbar-expand-md breadcrumb" id="nav">
+  <div class="collapse navbar-collapse" id="navbarCollapse" *ngIf="idLoggedIn">
+    <div class="nav nav-pills">
+      <a class="nav-item nav-link active ml-1"data-toggle="tab" routerLink="ava-portal">
+        <i class="fa fa-users"></i>
+        Ava
+      </a>
+      <a class="nav-item nav-link active ml-1"data-toggle="tab" routerLink="user/management">
+        <i class="fa fa-users"></i>
+        user/management
+      </a>
+      <a class="nav-item nav-link active ml-1"data-toggle="tab" routerLink="user/management" *ngIf="false">
+        <i class="fa fa-users"></i>
+        user/management
+      </a>
+      <button (click)="onLogOut()" class="btn btn-block btn-secondary">
+        <span>Logout  </span>
+        <i class="fas fa-sign-in-alt ml-1"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+<div *ngIf="!idLoggedIn"></div>
+
+
+
+
+
+
+<div id="wrapper" class="wrapper-content">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+               <h3>   ARAB TUNISIAN BANK</h3>
+                   
+               
+            </li>
+            <li>
+                <a routerLink="/ava-renewal">ava-renewal</a>
+            </li>
+            <li>
+                <a routerLink="/user/management">user/management</a>
+            </li>
+            <li>
+                <a href="#">Overview</a>
+            </li>
+            <li>
+                <a href="#">Events</a>
+            </li>
+            <li class="active">
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Services</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
+    </div>
+
+    
+</div>
+
+-->
+
+<mat-nav-list>
+ <div class="logo">
+   <img src="{{img}}" alt="" >
+   <span style="font-weight: bold;"> Allocation pour Voyages d’Affaires </span>
+ </div>
+ 
+  <hr>
+   <mat-list-item  class="parent">
+    <span class="full-width" style="font-weight: bold;" >Gestion dossier</span>
+  
+  </mat-list-item>
+  <div class="submenu">
+    <a mat-list-item routerLink="/portail-ava/ava-portal" [hidden]="!isBranchMaker">créer</a>
+    <a mat-list-item routerLink="/portail-ava/rechercher"  [hidden]="!isBranchMaker" >rechercher</a>
+    <a mat-list-item routerLink="/portail-ava/ava-renewal"  [hidden]="!isBranchMaker">renouveler</a>
+    <a mat-list-item routerLink="/portail-ava/branch-list" [hidden]="!isBranchChecker">branch list</a>
+    <a mat-list-item routerLink="/portail-ava/rg-maker-list" [hidden]="!isRegulatoryMaker">rg-maker-list</a>
+    <a mat-list-item routerLink="/portail-ava/rg-checker-list" [hidden]="!isSupervisor">rg-checker-list</a>
+    
+    <mat-list-item class="parent" [hidden]="!isBranchMaker">
+      <span class="full-width"  style="font-weight: bold; "> Gestion bénéficiaire</span>
+    </mat-list-item>
+    <div class="submenu"  [hidden]="!isBranchMaker">
+      <a mat-list-item  routerLink="/portail-ava/add-beneficiare">Ajouter un bénéficiaire</a>
+    </div>
+    <mat-list-item class="parent" [hidden]="!isSupervisor">
+      <span class="full-width"  style="font-weight: bold;" > Gestion utilisateur</span>
+    </mat-list-item>
+    <div class="submenu"  [hidden]="!isSupervisor">
+      <a mat-list-item  routerLink="/portail-ava/user/management">Portail de gestion des utilisateurs</a>
+    </div>
+   
+    <mat-list-item class="parent" [hidden]="!isSupervisor">
+      <span class="full-width"  style="font-weight: bold;" > rapports</span>
+    </mat-list-item>
+    <div class="submenu"  [hidden]="!isSupervisor">
+      <div class="pdfdate">
+         <a mat-list-item  (click)="exportAvasCustomPdf()" >PDF Ava custom </a>
+      <input type="date" [(ngModel)]="datepdf" >
+    </div>
+    </div>
+    <div class="submenu"  [hidden]="!isSupervisor">
+      <div class="pdfdate">
+         <a mat-list-item  (click)="exportBenefCustomPdf()" >PDF Benef custom </a>
+      <input type="date" [(ngModel)]="datepdf2" >
+    </div>
+    </div>
+    <div class="submenu"  [hidden]="!isSupervisor">
+      <a mat-list-item  (click)="exportAvasPdf()" >PDF A.V.A mois actuel </a>
+    </div>
+   
+    <div class="submenu"  [hidden]="!isSupervisor">
+      <a mat-list-item  (click)="exportBenefsPdf()" >PDF beneficiaries mois actuel </a>
+    </div>
+
+    
+   
+  </div>
+</mat-nav-list>
+

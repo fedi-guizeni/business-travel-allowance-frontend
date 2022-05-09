@@ -1,0 +1,16 @@
+<app-header></app-header>
+<mat-sidenav-container >
+
+  <mat-sidenav mode="side" opened style="z-index: -1;" >
+    
+    <app-navside></app-navside>
+  </mat-sidenav>
+  <mat-sidenav-content role="main">
+  
+    <router-outlet></router-outlet>
+    <notifier-container></notifier-container>
+    <div
+    style="height: 700px;"></div>
+  </mat-sidenav-content>
+
+  <mat-sidenav-container >

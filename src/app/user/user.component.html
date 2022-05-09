@@ -1,0 +1,360 @@
+
+<div   class="container" >
+    <div class="row mb-2 mt-2 text-center">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+        <h5>Portail de gestion des utilisateurs</h5>
+        <small *ngIf="titleAction$ |async as title">{{title}}</small>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+ 
+    <!-- nav bar   -->
+    <nav class="navbar navbar-expand-md breadcrumb">
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="nav nav-pills">
+          <a class="nav-item nav-link active ml-1" (click)="changeTitle('Utilisateurs')" data-toggle="tab" href="#users">
+            <i class="fa fa-users"></i>
+            Utilisateurs
+          </a>
+          <a  class="nav-item nav-link ml-3" (click)="changeTitle('Réglages')" data-toggle="tab" href="#reset-password">
+            <i class="fa fa-cogs"></i>
+            Réglages
+          </a>
+         
+         
+        </div>
+      </div>
+    </nav>
+    <!-- main content -->
+  <div class="tab-content mt-3" id="myTabContent" >
+    <!-- user table -->
+    <div class="tab-pane fade show active" id="users">
+      <div class="mb-3 float-right">
+        <div class="btn-group mr-2">
+          <form class="form-inline my-2 my-lg-0 justify-content-center m-2 ">
+            <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2 m-2" ngModel
+            (ngModelChange)="searchUsers(searchInput?.value)" type="search" placeholder="rechercher utilisateurs...">
+         </form>
+          <button [hidden] type="button" class="btn btn-info  m-2" data-toggle="modal" data-target="#addUserModal" data-backdrop="false" >
+            <i class="fa fa-plus"></i>  Nouvel utilisateur
+          </button>
+        </div>
+        <div class="btn-group m-2">
+          <button type="button" (click)="getUsers(true)" class="btn btn-info">
+            <i *ngIf="refreshing" class="fas fa-sync fa-spin"></i><i *ngIf="!refreshing" class="fas fa-sync"></i>
+          </button>
+        </div>
+      </div>
+      <table class="table table-hover">
+        <thead class="table-borderless">
+          <tr class="text-center">
+           
+            <th>Num utilisateur</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Identifiant</th>
+            <th>Email</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let appUser of users">
+          <tr class="text-center" >
+            <td (click)="onSelectUser(appUser)">{{appUser?.userId}}</td>
+            <td (click)="onSelectUser(appUser)">{{appUser?.firstName}}</td>
+            <td (click)="onSelectUser(appUser)">{{appUser?.lastName}}</td>
+            <td (click)="onSelectUser(appUser)">{{appUser?.username}}</td>
+            <td (click)="onSelectUser(appUser)">{{appUser?.email}}</td>
+            <td (click)="onSelectUser(appUser)">
+              <span [hidden]="!appUser?.active" class="badge badge-success">Active</span>
+              <span [hidden]="appUser?.active" class="badge badge-danger" >Inactive</span>
+            </td>
+            <td class="">
+              <div class="btn-group">
+                <button class="btn btn-outline-info" (click)="onEditUser(appUser)" data-backdrop="false"><i class="fas fa-edit"></i></button>
+                <button [hidden] class="btn btn-outline-danger" (click)="onDeleteUser(appUser?.id)"  data-backdrop="false"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- modal user info -->
+
+        </tbody>
+      </table>
+    </div>
+
+    <button [hidden]="true" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal"  data-backdrop="false">
+    </button>
+    <button [hidden]="true" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal" data-backdrop="false">
+    </button>
+    <button [hidden]="true" type="button" id="openUserDelete" data-toggle="modal" data-target="#UserDeleteModal" data-backdrop="false">
+    </button>
+     <!-- change password  -->
+     <div  class="tab-pane fade" id="reset-password">
+      <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
+        <fieldset>
+          <legend>Gestion des mots de passe utilisateur</legend>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Adresse e-mail</label>
+            <input type="email" name="reset-password-email" required ngModel class="form-control"
+              placeholder="Entrez l'e-mail (example@email.com)">
+            <small class="form-text text-muted">assurez-vous d'entrer une adresse e-mail correcte.</small>
+          </div>
+          <button type="submit" [disabled]="resetPasswordForm.invalid" class="btn btn-primary">
+            <i *ngIf="refreshing" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
+            <span *ngIf="refreshing">Chargement...</span>
+            <span *ngIf="!refreshing">réinitialiser le mot de passe</span>
+          </button>
+        </fieldset>
+      </form>
+    </div>
+    
+ 
+ <!-- modal user info -->
+ <div class="modal fade bd-example-modal-lg"  id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
+ aria-hidden="true" >
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedUser?.firstName}}
+         {{selectedUser?.lastName}}
+       </h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       <div>
+         <div class="card">
+           <div class="card-body">
+             <div class="row">
+               <div class="col-12 col-sm-auto">
+                 <div class="mx-auto" style="width: 120px;">
+                   <div class="d-flex justify-content-center align-items-center rounded">
+                    <h3 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser?.firstName}}
+                      {{selectedUser?.lastName}}</h3>
+                   </div>
+                 </div>
+               </div>
+               <div class="col d-flex flex-column flex-sm-row justify-content-between">
+                 <div class="text-center text-sm-left mb-sm-0">
+                  
+                   <p class="mb-1"> Identifiant : {{selectedUser?.username}}</p>
+                   <div class="">Statut :
+                     <span [hidden]="!selectedUser?.active" class="badge badge-success">Actif</span>
+                     <span [hidden]="selectedUser?.active" class="badge badge-danger">Inactif</span>
+                   </div>
+                   <div *ngIf="selectedUser?.lastLoginDateDisplay" class="text-muted"><small>Dernière connexion: {{selectedUser?.lastLoginDateDisplay | date: 'medium'}}</small>
+                   </div>
+                 </div>
+                 <div class="text-center text-sm-right">
+                   <div class="text-muted"><small>Rejoint {{selectedUser?.joinDate | date: 'mediumDate'}}</small></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <ul class="list-group list-group-flush">
+             <li class="list-group-item"></li>
+             <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>  {{selectedUser?.userId}}
+             </li>
+             <li class="list-group-item"><i class="fa fa-envelope float-right"></i>  {{selectedUser?.email}}
+             </li>
+             <li class="list-group-item"><i class="fas fa-shield-alt float-right"></i>  {{selectedUser?.role}}
+             <li *ngIf="selectedUser?.lastLoginDateDisplay" class="list-group-item"><i
+                 class="fas fa-sign-in-alt float-right"></i>  {{selectedUser?.lastLoginDateDisplay | date: 'medium'}}
+             </li>
+             <li class="list-group-item">
+               <span [hidden]="selectedUser?.notLocked">
+                 <i class="fa fa-lock float-right" style="color: red;">
+                 </i>
+                 Compte bloqué
+               </span>
+               <span [hidden]="!selectedUser?.notLocked">
+                 <i class="fa fa-unlock float-right" style="color: green;">
+                 </i>
+                 Compte débloqué
+               </span>
+             </li>
+           </ul>
+         </div>
+       </div>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     </div>
+   </div>
+ </div>
+</div>
+ <!-- model add user -->
+ <div  class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
+ aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title text-center">Nouvel utilisateur</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       <div>
+         <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
+           <div class="form-group ">
+             <label class="mb-2" for="firstName">Nom</label>
+             <input type="text" name="firstName" required ngModel class="form-control">
+           </div>
+           <div class="form-group">
+             <label class="mb-2 mt-2" for="lastName">Prenom</label>
+             <input type="text" name="lastName" required ngModel class="form-control">
+           </div>
+           <div class="form-group">
+             <label class="mb-2 mt-2" for="username">Identifiant</label>
+             <input type="text" name="username" required ngModel class="form-control">
+           </div>
+           <div class="form-group">
+             <label class="mb-2 mt-2" for="email">Email</label>
+             <input type="email" name="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" #emailInput="ngModel" required ngModel class="form-control">
+             <div  class="help-block" style="color:red;"
+             *ngIf="emailInput.invalid && emailInput.touched"  >Email non Valid.</div>
+           </div>
+           <div  class="form-group">
+             <label class="mb-2 mt-2" for="authority">Role</label>
+             <select name="role" required ngModel="ROLE_USER" class="form-control">
+               <option value="CREATEUR_SUCCURSALE">CREATEUR_SUCCURSALE</option>
+               <option value="VÉRIFICATEUR_SUCCURSALE">VÉRIFICATEUR_SUCCURSALE</option>
+               <option value="CREATEUR_RÉGLEMENTAIRE">CREATEUR_RÉGLEMENTAIRE</option>
+               <option value="VÉRIFICATEUR_RÉGLEMENTAIRE">VÉRIFICATEUR_RÉGLEMENTAIRE</option>
+             </select>
+           </div>
+          
+           <fieldset class="form-group mt-3">
+             <div class="form-check">
+               <label class="form-check-label">
+                 <input type="checkbox" name="active" ngModel class="form-check-input" >
+                 Actif
+               </label>
+             </div>
+             <div class="form-check disabled">
+               <label class="form-check-label">
+                 <input type="checkbox" name="notLocked" ngModel class="form-check-input">
+                 Débloqué
+               </label>
+             </div>
+           </fieldset>
+           <button type="submit" style="display: none;" id="new-user-save"></button>
+         </form>
+       </div>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-dismiss="modal" id="new-user-close">Fermer</button>
+       <button type="button" (click)="saveNewUser()" [disabled]="newUserForm.invalid" class="btn btn-primary">Valider</button>
+     </div>
+   </div>
+ </div>
+</div>
+<!-- modal edit user -->
+<div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1"
+role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Éditer : {{editUser?.firstName}}
+        {{editUser?.lastName}}</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="">
+        <form #editUserForm="ngForm">
+          <div class="form-group">
+            <label class="mb-2 mt-2"for="firstName">Nom</label>
+            <input type="text" name="firstName" required
+              [(ngModel)]="editUser.firstName" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="mb-2 mt-2" for="lastName">Prenom</label>
+            <input type="text" name="lastName" required
+              [(ngModel)]="editUser.lastName" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="mb-2 mt-2" for="username">Identifiant</label>
+            <input type="text" name="username" required
+              [(ngModel)]="editUser.username" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="mb-2 mt-2" for="email">Email</label>
+            <input type="email" name="email" required [(ngModel)]="editUser.email"
+              class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="mb-2 mt-2" for="authority">Role</label>
+              <select name="role" required [(ngModel)]="editUser.role" class="form-control">
+                <option value="ROLE_USER">USER</option>
+                <option value="AGENT_USER">ADMIN</option>
+                <option value="ADMIN_USER">SUPER ADMIN</option>
+                <option value="CREATEUR_SUCCURSALE">CREATEUR_SUCCURSALE</option>
+               <option value="VÉRIFICATEUR_SUCCURSALE">VÉRIFICATEUR_SUCCURSALE</option>
+               <option value="CREATEUR_RÉGLEMENTAIRE">CREATEUR_RÉGLEMENTAIRE</option>
+               <option value="VÉRIFICATEUR_RÉGLEMENTAIRE">VÉRIFICATEUR_RÉGLEMENTAIRE</option>
+              </select>
+          </div>
+          <fieldset class="form-group">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input name="active" type="checkbox" [(ngModel)]="editUser.active"
+                  class="form-check-input">
+                  Actif
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <label class="form-check-label">
+                <input name="locked" type="checkbox" [(ngModel)]="editUser.notLocked"
+                  class="form-check-input">
+                  Débloqué
+              </label>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Fermer</button>
+      <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid" class="btn btn-primary">Valider</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade bd-example-modal-lg"  id="viewdeleteModal" tabindex="-1" role="dialog" aria-labelledby=""
+aria-hidden="true" >
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center" id="exampleModalLongTitle">confirmer
+      </h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              
+                  <div class="d-flex justify-content-center align-items-center rounded">
+                   <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">  vous etes sur ? </h6>
+                  
+              </div>
+            <div class="row">
+              
+                    <button>yes</button>
+                <button>no</button>
+                  
+        </div>
+      </div>
+    </div>
+</div>  

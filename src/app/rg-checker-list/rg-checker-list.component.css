@@ -1,0 +1,24 @@
+.content{
+    margin: 20px;
+   
+}
+.modal { background: rgba(000, 000, 000, 0.5);  }
+.wrapper{
+    padding: 10px;
+}
+#listAva{
+    border: 1px solid black;
+}
+#search{
+    margin-bottom: 10px;
+}
+.pagination{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+   
+}
+.my-pagination /deep/ .ngx-pagination .current{
+    border: 1px solid black;
+   
+}

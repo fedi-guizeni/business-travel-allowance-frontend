@@ -1,0 +1,81 @@
+<div class="title" > <h4>Gestion bénéficiaire > ajouter </h4> </div>
+
+<div class="container px-5 my-5">
+    <h3 > creation nouveau bénéficiaire</h3>
+    <form id="contactForm" data-sb-form-api-token="API_TOKEN"  id="beneFform" #BeneFform="ngForm" (ngSubmit)="onBenefAdd(BeneFform.value)" >
+        <div class="form-floating mb-3">
+            <input class="form-control" id="idClient" type="text" #idClientInput="ngModel" pattern="^[0-9]*$" placeholder="id client" data-sb-validations="required" name="idClient" [(ngModel)]="id" [readonly]="ro"  required/>
+            <label for="idClient">id client</label>
+            <div  class="help-block" style="color:red;"*ngIf="idClientInput.invalid && idClientInput.touched"  >num Client non valide.</div>
+        </div>
+        <div class="form-floating mb-3 ">
+            <select class="form-select" aria-label="type Ava" name="avaType" [(ngModel)]="type"  #avatype required >
+                <option value="" disabled selected> sélectionner le type ava</option>
+                <option  value="exportateur">exportateur</option>
+                <option value="autre-activités">autre activités</option>
+                <option value="marche-a-etranger">marche a l&#x27;étranger</option>
+            </select>
+            <label for="typeAva">type Ava*</label>
+        </div> 
+        <div class="form-floating mb-3">
+            <input class="form-control" type="text" placeholder="id Benef" data-sb-validations="required"  name="id-benef" [(ngModel)]="benef.idBenef" required/> 
+            <label for="idBenef">id Benef</label>
+            <div class="invalid-feedback" data-sb-feedback="idBenef:required">id Benef is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" id="benefCardType" aria-label="benef Card Type" name="benefCardType" [(ngModel)]="benef.benefCardType" required>
+                <option value=""></option>
+                <option value="cs">cs</option>
+                <option value="cin">cin</option>
+            </select>
+            <label for="benefCardType">benef Card Type</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="benefCardId" type="text" #benefCardIdInput="ngModel" pattern="^[0-9]*$" placeholder="benef Card Id" data-sb-validations="required"name="benefCardId" [(ngModel)]="benef.benefCardId"  required />
+            <label for="benefCardId">benef Card Id</label>
+            <div  class="help-block" style="color:red;"*ngIf="idClientInput.invalid && idClientInput.touched"  >benef Card Id non valide.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="nomPrenomBenef" type="text" placeholder="nom Prenom Benef" data-sb-validations="required"name="nomPrenomBenef" [(ngModel)]="benef.nomPrenomBenef" required />
+            <label for="nomPrenomBenef">nom Prenom Benef</label>
+            <div class="invalid-feedback" data-sb-feedback="nomPrenomBenef:required">nom Prenom Benef is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="adressBenef" type="text" placeholder="adress Benef" data-sb-validations="required" name="adressBenef" [(ngModel)]="benef.adressBenef" required />
+            <label for="adressBenef">adress Benef</label>
+            <div class="invalid-feedback" data-sb-feedback="adressBenef:required">adress Benef is required.</div>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" id="qualite" aria-label="qualite" name="qualite" [(ngModel)]="benef.qualite" required>
+                <option value=""></option>
+                <option value="pour dirigeant">pour dirigeant</option>
+                <option value="pour employe">pour employe</option>
+                <option value="membre du conseil d’administration">membre du conseil d’administration</option>
+            </select>
+            <label for="qualite">qualite</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="tel" type="text" #telInput="ngModel" pattern="^[0-9]*$" maxlength="8" placeholder="tel" data-sb-validations="required" name="tel" [(ngModel)]="benef.tel" required />
+            <label for="tel">tel</label>
+            <div  class="help-block" style="color:red;" *ngIf="telInput.invalid && telInput.touched"  >Num tel non valide.</div>
+        </div>
+      
+        <input name="beneficiaries"   [(ngModel)]="benefs" type="text" [hidden]="true"> 
+        <div class="d-none" id="submitSuccessMessage">
+            <div class="text-center mb-3">
+                <div class="fw-bolder">Form submission successful!</div>
+                <p>To activate this form, sign up at</p>
+                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+            </div>
+        </div>
+        <div class="d-none" id="submitErrorMessage">
+            <div class="text-center text-danger mb-3">Error sending message!</div>
+        </div>
+        <div class="d-flex flex-row-reverse ">
+            <button  class="btn btn-primary btn-lg  m-1  "  [disabled]="BeneFform.invalid" id="submitButton" type="submit">Valider</button>
+            <button class="btn btn-secondary btn-lg m-1 "  type="reset">Réinitialiser</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>

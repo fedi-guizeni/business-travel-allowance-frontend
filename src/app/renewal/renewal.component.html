@@ -1,0 +1,159 @@
+<div class="wrapper"> 
+<div class="content">  
+<form class="form-inline my-2 my-lg-0 justify-content-center">
+    <input name="searchTerm" #searchInput="ngModel" class="form-control mr-sm-2" id="search" [(ngModel)]="searchAva" 
+    placeholder="Search AVA...">
+ </form>
+
+<table class="table table-hover" id="listAva">
+    <thead class="table-borderless">
+      <tr class="text-center">
+       
+        <th>Num client</th>
+        <th>Type ava</th>
+        <th>Reference dossier</th>    
+        <th>Caht</th>      
+        <th>Date validite</th>
+        <th>Fin validite</th>
+        <th>Statut dossier</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+      
+    <tbody  *ngFor="let ava of avas | filter:searchAva | paginate: { id: 'listAvaS',
+    itemsPerPage: pageSize,
+    currentPage:page }">
+     
+      <tr class="text-center" style="cursor: pointer;"   > <!--*ngIf="ava.statutDossier===statut"-->
+        <td >{{ava?.idClient}}</td>
+        <td>{{ava?.avaType}}</td>
+        <td >{{ava?.referenceDossierAVA}}</td>
+        <td >{{ava?.caht}}</td> 
+        <td> {{ava?.dateValidite | date:'yyyy-MM-dd'}} </td>
+        <td> {{ava?.finValidite | date:'yyyy-MM-dd'}} </td>
+        <td >{{ava?.statutDossier}}</td>
+          <td> 
+        
+        <div class="btn-group">
+          <button class="btn btn-outline-info" (click)="onEditRAva(ava)" data-backdrop="false"><i class="fas fa-calendar-plus"></i></button>
+     
+        </div>
+       </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination"> 
+  <pagination-controls class="my-pagination"  id="listAvaS" (pageChange)="page = $event" nextLabel="suivante" previousLabel="précédente"></pagination-controls>
+  </div>
+    <button [hidden]="true" type="button" id="openAvaInfo" data-toggle="modal" data-target="#viewAvaModal" data-backdrop="false">
+    </button>
+
+    <div class="modal fade" id="viewAvaModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document" style="background-color: white;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center">Edit {{editAva?.idClient}}
+            {{editAva?.avaType}} statutDossier : <span> {{editAva?.statutDossier}} </span> </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <form #editUserForm="ngForm" [autocomplete]="false">
+             
+              <div class="form-group mt-2">
+                <label class="p-1" for="statutDossier">Num client</label>
+                <input type="text" name="idClient" required readonly
+                  [(ngModel)]="editAva.idClient" class="form-control">
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="referenceDossierAVA">Reference dossier</label>
+                <input type="text" name="referenceDossierAVA" required readonly
+                  [(ngModel)]="editAva.referenceDossierAVA" class="form-control">
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="avaType">Type ava</label>
+                <input type="text" name="avaType" required readonly
+                  [(ngModel)]="editAva.avaType" class="form-control">
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="naturePiece">Type carte</label>
+                <input type="text" name="naturePiece" required readonly
+                  [(ngModel)]="editAva.naturePiece" class="form-control">
+                  <div class="form-group  mt-2" >
+                    <label class="p-1" for="avaType">Num carte</label>
+                    <input type="text" name="numCin" required readonly 
+                      [(ngModel)]="editAva.numCin" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="dateValidite">Date validite</label>
+                <input type="date" name="dateValidite" required [ngModel]= "editAva.dateValidite | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dateValidite"    class="form-control" >
+                  
+              </div>    
+                  <div class="form-group  mt-2">
+                <label class="p-1" for="finValidite">Fin validite</label>
+                  <input  type="date"  name="finValidite" required [ngModel]= "editAva.finValidite | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.finValidite"   class="form-control">
+              </div>
+                    <div class="form-group  mt-2">
+                <label class="p-1" for="caht">C a h t</label>
+                <input type="text" name="caht" required
+                  [(ngModel)]="editAva.caht" class="form-control">
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="dat">D a t</label>
+                <input type="text" name="dat" required
+                  [(ngModel)]="editAva.dat" class="form-control">
+              </div> 
+              <div class="form-group  mt-2" >
+                <label  class="p-1" for="referenceFiscale">referenceFiscale</label>
+                  <input  type="text"  name="referenceFiscale" required    [(ngModel)]="editAva.referenceFiscale"  class="form-control">
+              </div>         
+              <div class="form-group  mt-2">
+                <label class="p-1" for="dateDeclarationFiscale">Date declaration fiscale</label>
+                  <input  type="date"  name="dateDeclarationFiscale" required [ngModel]= "editAva.dateDeclarationFiscale | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dateDeclarationFiscale"  class="form-control">
+              </div>
+            
+              <div class="form-group  mt-2">
+                <label class="p-1" for="activiteBct">Activite bct</label>
+                  <input  type="text"  name="activiteBct" required [(ngModel)]="editAva.activiteBct"  class="form-control">
+              </div>  
+              <div class="form-group  mt-2">
+                <label class="p-1" for="numAutorBct">Num autorisation bct</label>
+                  <input  type="text"  name="numAutorBct" required [(ngModel)]="editAva.numAutorBct"  class="form-control">
+              </div>
+              <div class="form-group  mt-2">
+                <label class="p-1" for="dataAutoBct">Date autorisation bct</label>
+                  <input  type="date"  name="dataAutoBct" required  [ngModel]= "editAva.dataAutoBct | date:'yyyy-MM-dd'"  (ngModelChange)=" editAva.dataAutoBct"  class="form-control">
+              </div>
+              
+              <div class="form-group  mt-2">
+                <label class="p-1" for="montantBct">Montant bct</label>
+                  <input  type="text"  name="montantBct" required [(ngModel)]="editAva.montantBct"  class="form-control">
+              </div>
+             
+           
+             
+           <!--    <div class="form-group  mt-2">
+                <label class="p-1" for="statutDossier">Statut dossier</label>
+                  <input  type="text"  name="statutDossier" required [ngModel]="editAva.statutDossier"  class="form-control" >
+              </div> -->
+              
+            
+           
+              <div class="form-group  mt-2">
+                <label class="p-1" for="observation">Observation</label>
+                <textarea name="observation" id="observation"  name="observation" required [(ngModel)]="editAva.observation"  class="form-control"></textarea>
+                
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Fermer</button>
+          <button type="button"[disabled]="editUserForm.invalid" (click)="onValidAva()"  class="btn btn-primary">Valider</button>
+        </div>
+      </div>
+    </div>

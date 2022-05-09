@@ -1,0 +1,22 @@
+ul li {
+    list-style: none;
+  }
+ 
+  mat-toolbar{
+      background-color: #cac9c9;
+  }
+  .item{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .para{
+      font-weight: 500;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      cursor: pointer;
+  }
+  *{
+      color: rgb(181, 13, 13);
+  }
+  
+ 
